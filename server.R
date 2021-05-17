@@ -12,7 +12,10 @@ shinyServer(function(input, output) {
     })
     
     output$rg_datatable <- renderDT({
-        DT::datatable(rg$data, editable = TRUE)
+        DT::datatable(rg$data, 
+                      colnames = c("Risk group", "Population size", "IFR", "RR of infection", "Pre-existing immunity (%)", "Coverage target (%)"), 
+                      caption = "Priority groups for vaccination (editable)", 
+                      editable = TRUE)
     })
     
     observeEvent(input$rg_datatable_cell_edit, {
@@ -30,7 +33,10 @@ shinyServer(function(input, output) {
         read.csv("supply.csv", stringsAsFactors = F)
     })
     output$supply_datatable <- renderDT({
-        DT::datatable(supply$data, editable = TRUE)
+        DT::datatable(supply$data, 
+                      colnames = c("Week", "Doses", "Max delivery/wk"), 
+                      caption = "Vaccine supply and delivery constraints (editable)", 
+                      editable = TRUE)
     })
     
     observeEvent(input$supply_datatable_cell_edit, {
@@ -209,8 +215,8 @@ run_model <-function(rgs, s, v_params, strat, mixed_cat){
     rg<-rgs$data
     ss<-s$data
     S<-R<-matrix(data = NA, nrow = T, ncol = n)
-    S[1,]<-(1-rg$Natural.immune)*rg$Size*rg$Coverage.target
-    R[1,]<-rg$Natural.immune*rg$Size*rg$Coverage.target
+    S[1,]<-(1-rg$Natural.immune/100)*rg$Size*rg$Coverage.target/100
+    R[1,]<-(rg$Natural.immune/100)*rg$Size*rg$Coverage.target/100
     vs1<-vs2<-vr1<-vr2<-d1_cov<-d2_cov<-matrix(data = 0, nrow = T, ncol = n)
     DA<-matrix(data = 0, nrow = T, ncol = n)
     #vaccinate
