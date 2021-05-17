@@ -28,5 +28,5 @@ _Mixed strategies_ Immunise everyone in risk group 1 to $x$ (e.g. health workers
 
 _Others_ Can be specified as required.
 
-# 1vs2doses
+
  
